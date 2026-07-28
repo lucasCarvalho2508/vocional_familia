@@ -3,6 +3,7 @@ import json
 import streamlit as st
 from groq import Groq
 
+
 st.set_page_config(page_title="Campanha de Oração Devocional", layout="centered")
 
 # Busca a chave nos secrets do Streamlit de forma segura
