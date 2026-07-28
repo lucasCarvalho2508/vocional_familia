@@ -3,7 +3,6 @@ import json
 import streamlit as st
 from groq import Groq
 
-
 st.set_page_config(page_title="Campanha de Oração Devocional", layout="centered")
 
 # Busca a chave nos secrets do Streamlit de forma segura
@@ -19,7 +18,7 @@ if not GROQ_KEY:
     GROQ_KEY = os.getenv("GROQ_API_KEY")
 
 st.title("📖 Nosso Momento Devocional")
-st.write("Estudo simples versículo por versículo para acompanhar a leitura em família.")
+st.write("Estudo simples versículo por versículo para acompanhar a leitura em família (Tradução: Almeida Revista e Atualizada - ARA).")
 st.divider()
 
 col1, col2 = st.columns([2, 1])
@@ -42,7 +41,7 @@ if st.button("🔍 Carregar Estudo Devocional", type="primary", use_container_wi
                 O público-alvo é uma senhora idosa (uma avó querida) lendo junto com seu neto.
 
                 Instruções Obrigatórias:
-                1. Traga TODOS os versículos do capítulo {livro} {capitulo} na íntegra (em português).
+                1. Traga TODOS os versículos do capítulo {livro} {capitulo} na íntegra, usando ESTRITAMENTE o texto da tradução da BÍBLIA ALMEIDA REVISTA E ATUALIZADA (ARA).
                 2. NÃO use termos teológicos difíceis (sem grego, hebraico, exegese, jargões acadêmicos, etc.).
                 3. Explique versículo por versículo em 2 ou 3 frases simples, doces e carinhosas.
                 4. Responda ESTRITAMENTE em formato JSON com a seguinte estrutura exata:
@@ -50,7 +49,7 @@ if st.button("🔍 Carregar Estudo Devocional", type="primary", use_container_wi
                     "versiculos": [
                         {{
                             "numero": 1,
-                            "texto": "Texto bíblico exato do versículo 1",
+                            "texto": "Texto bíblico exato do versículo na versão ARA",
                             "explicacao": "Explicação simples e afetuosa"
                         }}
                     ]
@@ -60,7 +59,7 @@ if st.button("🔍 Carregar Estudo Devocional", type="primary", use_container_wi
                 completion = client.chat.completions.create(
                     model="llama-3.3-70b-versatile",
                     messages=[
-                        {"role": "system", "content": "Você é um assistente pastoral especializado em devocionais simples e estruturação de respostas estritamente em JSON."},
+                        {"role": "system", "content": "Você é um assistente pastoral especializado em devocionais simples, utilizando a tradução bíblica Almeida Revista e Atualizada (ARA) e respostas estritamente em JSON."},
                         {"role": "user", "content": prompt}
                     ],
                     response_format={"type": "json_object"}
@@ -68,7 +67,7 @@ if st.button("🔍 Carregar Estudo Devocional", type="primary", use_container_wi
                 
                 dados = json.loads(completion.choices[0].message.content)
 
-                st.subheader(f"📖 {livro.capitalize()} {capitulo}")
+                st.subheader(f"📖 {livro.capitalize()} {capitulo} (ARA)")
                 st.divider()
 
                 for item in dados.get("versiculos", []):
