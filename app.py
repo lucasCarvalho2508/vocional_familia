@@ -5,8 +5,17 @@ from groq import Groq
 
 st.set_page_config(page_title="Campanha de Oração Devocional", layout="centered")
 
-# Busca a chave primeiro no st.secrets e depois nas variáveis de ambiente
-GROQ_KEY = st.secrets.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
+# Busca a chave nos secrets do Streamlit de forma segura
+GROQ_KEY = None
+try:
+    if "GROQ_API_KEY" in st.secrets:
+        GROQ_KEY = st.secrets["GROQ_API_KEY"]
+except Exception:
+    pass
+
+# Se não encontrou no st.secrets, busca nas variáveis de ambiente padrão
+if not GROQ_KEY:
+    GROQ_KEY = os.getenv("GROQ_API_KEY")
 
 st.title("📖 Nosso Momento Devocional")
 st.write("Estudo simples versículo por versículo para acompanhar a leitura em família.")
