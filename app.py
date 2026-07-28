@@ -44,7 +44,8 @@ if st.button("🔍 Carregar Estudo Devocional", type="primary", use_container_wi
                 1. Traga TODOS os versículos do capítulo {livro} {capitulo} na íntegra, usando ESTRITAMENTE o texto da tradução da BÍBLIA ALMEIDA REVISTA E ATUALIZADA (ARA).
                 2. NÃO use termos teológicos difíceis (sem grego, hebraico, exegese, jargões acadêmicos, etc.).
                 3. Explique versículo por versículo em 2 ou 3 frases simples, doces e carinhosas.
-                4. Responda ESTRITAMENTE em formato JSON com a seguinte estrutura exata:
+                4. No final do capítulo, escreva uma EXPLANAÇÃO GERAL CURTA (um resumo simples de 1 parágrafo) explicando o tema principal e a lição central de todo o capítulo {livro} {capitulo}.
+                5. Responda ESTRITAMENTE em formato JSON com a seguinte estrutura exata:
                 {{
                     "versiculos": [
                         {{
@@ -52,7 +53,8 @@ if st.button("🔍 Carregar Estudo Devocional", type="primary", use_container_wi
                             "texto": "Texto bíblico exato do versículo na versão ARA",
                             "explicacao": "Explicação simples e afetuosa"
                         }}
-                    ]
+                    ],
+                    "explanacao_geral": "Uma síntese/explanação curta e clara sobre o tema central do capítulo"
                 }}
                 """
 
@@ -75,6 +77,12 @@ if st.button("🔍 Carregar Estudo Devocional", type="primary", use_container_wi
                     st.info(f"👉 **\"{item['texto']}\"**")
                     st.markdown(f"💡 **O que este versículo ensina:**\n{item['explicacao']}")
                     st.write("")
+
+                # Seção final com a explanação geral do capítulo
+                if "explanacao_geral" in dados:
+                    st.divider()
+                    st.subheader("💡 Explanação Geral do Capítulo")
+                    st.info(dados["explanacao_geral"])
 
             except Exception as e:
                 st.error(f"Erro ao gerar o estudo: {str(e)}")
