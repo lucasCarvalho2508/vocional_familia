@@ -5,7 +5,8 @@ from groq import Groq
 
 st.set_page_config(page_title="Campanha de Oração Devocional", layout="centered")
 
-GROQ_KEY = os.getenv("GROQ_API_KEY")
+# Busca a chave primeiro no st.secrets e depois nas variáveis de ambiente
+GROQ_KEY = st.secrets.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
 
 st.title("📖 Nosso Momento Devocional")
 st.write("Estudo simples versículo por versículo para acompanhar a leitura em família.")
